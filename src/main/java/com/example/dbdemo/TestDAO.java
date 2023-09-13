@@ -11,7 +11,7 @@ import java.util.List;
 @author kabir Pokhrel / Sept 5, 2023
 <p>
 DAO: Data Access Object
-Database bata data grab garni , ani object ma bind garni
+Database bata data grab garni, ani object ma bind garni
 </p>
  */
 public class TestDAO {
@@ -119,7 +119,7 @@ public class TestDAO {
                 if (resultSet.next()) {
                     String name = resultSet.getString("name");
 
-                 return new TestModel(id, name);
+                    return new TestModel(id, name);
 
                 }
 
@@ -134,7 +134,7 @@ public class TestDAO {
         return null;
     }
 
-    public static  boolean UpdateTestData(TestModel testDataToUpdate){
+    public static boolean UpdateTestData(TestModel testDataToUpdate) {
 
         try {
 
@@ -155,6 +155,39 @@ public class TestDAO {
                     return true;
 
                 }
+
+            }
+
+
+        } catch (SQLException sqlException) {
+            System.out.println("Could not fetch single data. Reason: " + sqlException.getMessage());
+        }
+
+
+        return false;
+
+    }
+
+    public static boolean deleteTestData(int id) {
+
+        try {
+
+            //1. Create a connection
+            Connection connection = DatabaseHelper.connect();
+            if (connection != null) {
+
+                //2. Prepare the statement
+                PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
+                preparedStatement.setInt(1, id);
+
+
+                //3. Execute the query
+                int affectedRows = preparedStatement.executeUpdate();
+
+                //4. Grab the result
+
+                return affectedRows > 0;
+
 
             }
 
